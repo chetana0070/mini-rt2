@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# environments
+.env
+.venv
+mini_rt2/
+*.egg-info/
+
+# large generated artifacts
+videos/
+datasets/
+checkpoints/
+logs/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# robosuite/mujoco temp
+*.mp4
+*.hdf5
+*.pt
+*.pth
+*.pkl
