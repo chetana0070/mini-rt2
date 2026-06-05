@@ -1,0 +1,92 @@
+{
+  "project": "Mini-RT2-Room",
+  "robot": "Franka Panda",
+  "simulator": "robosuite / MuJoCo",
+  "base_env": "PickPlace",
+  "camera_names": [
+    "agentview",
+    "frontview"
+  ],
+  "object_aliases": {
+    "Milk": "mug",
+    "Bread": "book",
+    "Cereal": "toy",
+    "Can": "remote",
+    "bin1": "robot right pallet",
+    "bin2": "robot left pallet"
+  },
+  "tasks": [
+    {
+      "task_id": "mug_to_robot_left_pallet",
+      "instruction": "put the mug in the robot left pallet",
+      "robosuite_object": "Milk",
+      "living_room_object": "mug",
+      "target_container": "bin2",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "mug_to_robot_right_pallet",
+      "instruction": "put the mug in the robot right pallet",
+      "robosuite_object": "Milk",
+      "living_room_object": "mug",
+      "target_container": "bin1",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "book_to_robot_left_pallet",
+      "instruction": "put the book in the robot left pallet",
+      "robosuite_object": "Bread",
+      "living_room_object": "book",
+      "target_container": "bin2",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "book_to_robot_right_pallet",
+      "instruction": "put the book in the robot right pallet",
+      "robosuite_object": "Bread",
+      "living_room_object": "book",
+      "target_container": "bin1",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "remote_to_robot_left_pallet",
+      "instruction": "put the remote in the robot left pallet",
+      "robosuite_object": "Can",
+      "living_room_object": "remote",
+      "target_container": "bin2",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "remote_to_robot_right_pallet",
+      "instruction": "put the remote in the robot right pallet",
+      "robosuite_object": "Can",
+      "living_room_object": "remote",
+      "target_container": "bin1",
+      "experimental": false,
+      "enabled_for_agent": true
+    },
+    {
+      "task_id": "toy_to_robot_left_pallet",
+      "instruction": "put the toy in the robot left pallet",
+      "robosuite_object": "Cereal",
+      "living_room_object": "toy",
+      "target_container": "bin2",
+      "experimental": true,
+      "enabled_for_agent": false
+    },
+    {
+      "task_id": "toy_to_robot_right_pallet",
+      "instruction": "put the toy in the robot right pallet",
+      "robosuite_object": "Cereal",
+      "living_room_object": "toy",
+      "target_container": "bin1",
+      "experimental": true,
+      "enabled_for_agent": false
+    }
+  ]
+}
