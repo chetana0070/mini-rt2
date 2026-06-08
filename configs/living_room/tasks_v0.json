@@ -1,6 +1,6 @@
 {
   "project": "Mini-RT2-Room",
-  "robot": "Franka Panda",
+  "robot": "UR5e",
   "simulator": "robosuite / MuJoCo",
   "base_env": "PickPlace",
   "camera_names": [

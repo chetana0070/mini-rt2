@@ -10,6 +10,7 @@ sys.path.insert(0, PROJECT_ROOT)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--task", type=str, default="remote_to_right_tray")
+parser.add_argument("--robot", type=str, default="UR5e", choices=["UR5e", "Panda"])
 parser.add_argument("--gl", type=str, default="glfw", choices=["glfw", "egl", "osmesa"])
 parser.add_argument("--horizon", type=int, default=720)
 parser.add_argument("--height", type=int, default=128)
@@ -44,6 +45,7 @@ def main():
 
     env, camera_names = make_pickplace_env(
         render=True,
+        robot=args.robot,
         camera_height=args.height,
         camera_width=args.width,
         horizon=args.horizon,
@@ -57,6 +59,8 @@ def main():
     bin_pos = get_bin_pos(env, task["target_container"])
 
     print("Task:", args.task)
+    print("Robot:", args.robot)
+    os.environ["ROBOT_NAME"] = args.robot
     print("Instruction:", instruction)
     print("Object:", obj_name)
     print("Target:", task["target_container"])

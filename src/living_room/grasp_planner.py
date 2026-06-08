@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from src.living_room.side_grasp_planner import choose_side_grasp
 
@@ -59,8 +60,25 @@ def plan_grasp(obs, obj_name, obj_start, bin_pos, lifted=False):
 
     base_xy = base_xy + np.asarray(meta["xy_bias"], dtype=np.float32)
 
+    # UR5e calibration:
+    # robot0_eef_pos is not perfectly centered between Robotiq fingers.
+    # In logs, EEF closed about +x, -y from mug center.
+    # So command EEF slightly -x, +y to align fingers on object.
+    if os.environ.get("ROBOT_NAME", "").lower() == "ur5e" and obj_name in ["Milk", "Can"]:
+        ur5e_bias = np.array([
+            float(os.environ.get("UR5E_GRASP_BIAS_X", "-0.035")),
+            float(os.environ.get("UR5E_GRASP_BIAS_Y", "0.025")),
+        ], dtype=np.float32)
+        base_xy = base_xy + ur5e_bias
+
     z0 = float(obj_start[2])
-    safe_z = max(z0 + float(meta["safe_z_add"]), 1.20)
+    # Robot-specific carrying height.
+    # Panda tolerated high carry around 1.20+.
+    # UR5e becomes unstable when carrying too high with the Robotiq gripper.
+    if os.environ.get("ROBOT_NAME", "").lower() == "ur5e":
+        safe_z = max(z0 + 0.240, 1.08)
+    else:
+        safe_z = max(z0 + float(meta["safe_z_add"]), 1.20)
 
     side_label = "center_top"
     approach_xy = base_xy.copy()
@@ -71,8 +89,17 @@ def plan_grasp(obs, obj_name, obj_start, bin_pos, lifted=False):
         approach_xy, grasp_xy, side_label = choose_side_grasp(obs, obj_name, obj_start, bin_pos=bin_pos)
 
     above_obj = np.array([approach_xy[0], approach_xy[1], safe_z])
-    pregrasp = np.array([approach_xy[0], approach_xy[1], z0 + float(meta["pregrasp_z_offset"])])
-    grasp = np.array([grasp_xy[0], grasp_xy[1], z0 + float(meta["grasp_z_offset"])])
+    if os.environ.get("ROBOT_NAME", "").lower() == "ur5e" and obj_name in ["Milk", "Can"]:
+        # UR5e Robotiq is larger than Panda gripper.
+        # Keep palm/fingers higher to avoid contact explosion.
+        pregrasp_z = z0 + float(os.environ.get("UR5E_PREGRASP_Z_ADD", "0.145"))
+        grasp_z = z0 + float(os.environ.get("UR5E_GRASP_Z_ADD", "0.020"))
+    else:
+        pregrasp_z = z0 + float(meta["pregrasp_z_offset"])
+        grasp_z = z0 + float(meta["grasp_z_offset"])
+
+    pregrasp = np.array([approach_xy[0], approach_xy[1], pregrasp_z])
+    grasp = np.array([grasp_xy[0], grasp_xy[1], grasp_z])
     lift = np.array([grasp_xy[0], grasp_xy[1], safe_z])
     above_pallet = np.array([bin_pos[0], bin_pos[1], safe_z])
     drop = np.array([bin_pos[0], bin_pos[1], z0 + float(meta["place_z_offset"])])

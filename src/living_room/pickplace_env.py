@@ -15,15 +15,16 @@ def make_pickplace_env(
     camera_height=128,
     camera_width=128,
     horizon=260,
+    robot="UR5e",
 ):
     controller_config = load_composite_controller_config(
         controller="BASIC",
-        robot="Panda",
+        robot=robot,
     )
 
     env = suite.make(
         env_name="PickPlace",
-        robots="Panda",
+        robots=robot,
         controller_configs=controller_config,
         has_renderer=render,
         has_offscreen_renderer=True,
