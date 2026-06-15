@@ -26,3 +26,17 @@ logs/
 *.pt
 *.pth
 *.pkl
+
+# Local experiment outputs
+runs/
+outputs/
+backups/
+datasets/
+MUJOCO_LOG.TXT
+
+# External cloned dependencies
+third_party/
+
+# Python cache
+__pycache__/
+*.pyc
