@@ -49,8 +49,7 @@ Interpretation:
 The policy learned an average trajectory instead of robust image-based object localization.
 
 ## Current Direction
-
-We are collecting digital cousin demonstrations in small chunks, then retraining image BC on a larger and more varied success-only dataset.
+Collecting digital cousin demonstrations in small chunks, then retraining image BC on a larger and more varied success-only dataset.
 
 ## Next Technical Steps
 
